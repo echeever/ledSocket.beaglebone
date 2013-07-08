@@ -1,1 +1,48 @@
-k
+<html> 
+<head> 
+<HTTP-EQUIV = "PRAGMA" CONTENT = "NO-CACHE"> 
+<title>BeageSocket</title>
+ <STYLE type="text/css">
+div#cntID {display: inline;}
+ </STYLE>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+<script src="http://192.168.1.37:3000/socket.io/socket.io.js"> </script>
+<script language="javascript" type="text/javascript">
+  console.log('xxx');
+  console.log('In');
+   var socket = io.connect('/');
+   //socket.connect();
+   socket.on('connect',function() {
+       console.log('Client connected to server');
+   });
+   socket.on('cnt', function(data) {
+       console.log('Count: ' + data);
+       document.getElementById("cntID").innerHTML='x: '+data; 
+   });
+   socket.on('message', function(data) {
+       console.log('Message: ' + data);
+       document.getElementById("cntID").innerHTML=data.cnt;
+       document.getElementById("eoID").innerHTML=data.eo;
+   });
+   socket.on('disconnect',function() {
+       console.log('Client disconnected');
+   });
+   function ledOn() {
+       console.log('Client sends LED: on');
+       socket.emit('LED','off');
+   }
+   function ledOff() { console.log('Cs L: off'); socket.emit('LED','off'); }
+   console.log('Out');
+</script>
+</head>
+<body>
+Hello world.<br/>
+
+  <button onClick="ledOn()">LED on </button><br/>
+  <button onClick="ledOff()">LED off</button>
+  <br/>Turn LED on or off.
+  <br/>Count = <div id="cntID">cnt</div>
+ <br/>Num is <div id="eoID" style="display: inline">eo</div>
+
+ 
+</body></html>
